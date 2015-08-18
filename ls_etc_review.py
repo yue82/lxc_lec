@@ -5,8 +5,7 @@ import sys
 import argparse
 import pdb
 
-if __name__ == '__main__':
-
+def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('pp', metavar='PP', help='print lines containing this pattern.')
     args = parser.parse_args()
@@ -23,3 +22,7 @@ if __name__ == '__main__':
     for file in filelist:
         if file.find(searchWord) != -1:
             print file
+
+if __name__ == '__main__':
+  main()
+
