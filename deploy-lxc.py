@@ -11,8 +11,8 @@ def main():
   # Destroy same name LXC
   for lxcName in lxcList+lxcSocatList:
     lxcNameSet = ["-n", lxcName]
-    cmdStop = ["lxc-stop"] + lxcNameSet
-    cmdDestroy = ["lxc-destroy"] + lxcNameSet
+    cmdStop = ["/usr/bin/lxc-stop"] + lxcNameSet
+    cmdDestroy = ["/usr/bin/lxc-destroy"] + lxcNameSet
 
     subprocess.call(cmdStop)
     subprocess.call(cmdDestroy)
@@ -20,8 +20,8 @@ def main():
   # Create and Start
   for lxcName in lxcList+lxcSocatList:
     lxcNameSet = ["-n", lxcName]
-    cmdCreate = ["lxc-create", "-t", "ubuntu"] + lxcNameSet
-    cmdStart = ["lxc-start"] + lxcNameSet + ["-d"]
+    cmdCreate = ["/usr/bin/lxc-create", "-t", "ubuntu"] + lxcNameSet
+    cmdStart = ["/usr/bin/lxc-start"] + lxcNameSet + ["-d"]
 
     subprocess.call(cmdCreate)
     subprocess.call(cmdStart)
@@ -29,12 +29,12 @@ def main():
   # deploy Socat
   for lxcName in lxcSocatList:
     lxcNameSet = ["-n", lxcName]
-    cmdAttach = ["lxc-attach"] + lxcNameSet + ["--"]
-    onSh = ["sh", "-c"] 
+    cmdAttach = ["/usr/bin/lxc-attach"] + lxcNameSet + ["--"]
+    onSh = ["/bin/sh", "-c"] 
 
-    attachInstallSocat = ["apt-get", "install", "-y", "socat"]
-    socatExec = "hostname"
-    attachSocat = ["socat TCP4-LISTEN:8000,fork,reuseaddr EXEC:\""+socatExec+"\" &"]
+    attachInstallSocat = ["/usr/bin/apt-get", "install", "-y", "socat"]
+    socatExec = "/bin/hostname"
+    attachSocat = ["/usr/bin/socat TCP4-LISTEN:8000,fork,reuseaddr EXEC:\""+socatExec+"\" &"]
 
     subprocess.call(cmdAttach + attachInstallSocat)
     subprocess.call(cmdAttach + onSh + attachSocat)
