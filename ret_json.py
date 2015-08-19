@@ -1,8 +1,10 @@
-#! /usr/bin/python
+#! /usr/bin/python3
 # encode:utf-8
 import subprocess
 import sys
 import json
+from socket import gethostname
+import datetime
 
 def main():
     cmdHost = ["/bin/hostname"]
@@ -14,15 +16,15 @@ def main():
     try:
         copHost = subprocess.check_output(cmdHost, stderr=subprocess.STDOUT)
         copDate = subprocess.check_output(cmdDate, stderr=subprocess.STDOUT)
-        copSar = subprocess.check_output(cmdSar, stderr=subprocess.STDOUT)
-        copLA = subprocess.check_output(cmdLoadAvg, stderr=subprocess.STDOUT)
-        copFree = subprocess.check_output(cmdFree, stderr=subprocess.STDOUT)
-    except subprocess.CallProcessError, (p):
-        print 'subprocess.CalledProcessError: cmd:%s returncode:%s' % (p.cmd, p.returncode)
+        copSar = subprocess.check_output(cmdSar, stderr=subprocess.STDOUT).decode("utf-8")
+        copLA = subprocess.check_output(cmdLoadAvg, stderr=subprocess.STDOUT).decode("utf-8")
+        copFree = subprocess.check_output(cmdFree, stderr=subprocess.STDOUT).decode("utf-8")
+    except(subprocess.CallProcessError, (p)):
+        print('subprocess.CalledProcessError: cmd:%s returncode:%s' % (p.cmd, p.returncode))
         sys.exit(1)
     
-    rsltHost = copHost.strip()
-    rsltDate = copDate.strip()
+    rsltHost = gethostname()
+    rsltDate = datetime.datetime.now().strftime("%Y/%m/%d %H:%M:%S")
     rsltSar = copSar.strip().split("\n")[3].strip().split()
     rsltLoadAvg = copLA.strip().split("\n")[3].strip().split()
     rsltFree1 = copFree.strip().split("\n")[1].strip().split()
@@ -51,11 +53,11 @@ def main():
         "MemData":rsltMem
     })
 
-    print 'HTTP/1.1 200 OK'
-    print 'Content-Type: application/json'
-    print 'Content-Length: {}'.format(len(objAll) + 1)
-    print
-    print objAll
+    print('HTTP/1.1 200 OK')
+    print('Content-Type: application/json')
+    print('Content-Length: {}'.format(len(objAll) + 1))
+    print("")
+    print(objAll)
     
 if __name__ == '__main__':
   main()
