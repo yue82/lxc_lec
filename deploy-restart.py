@@ -22,8 +22,8 @@ def main():
           
             subprocess.check_call(cmdStart)
             
-    except subprocess.CalledProcessError as err:
-        print('subprocess.CalledProcessError: cmd:%s returncode:%s' % (err.cmd, err.returncode))
+    except subprocess.CalledProcessError as e:
+        print('subprocess.CalledProcessError: cmd:%s returncode:%s' % (e.cmd, e.returncode))
         sys.exit(1)
         
 if __name__ == '__main__':
