@@ -14,7 +14,7 @@ def main():
         cmdStop = ["/usr/bin/lxc-stop"] + lxcNameSet
         cmdDestroy = ["/usr/bin/lxc-destroy"] + lxcNameSet
         
-        # 失敗してもよしとする
+        # failure ok
         subprocess.call(cmdStop)
         subprocess.call(cmdDestroy)
 
@@ -40,11 +40,11 @@ def main():
           
             subprocess.check_call(cmdAttach + attachInstallSocat)
             subprocess.check_call(cmdAttach + onSh + attachSocat)
-            
-    except subprocess.CallProcessError, (p):
-        print "Failure"
-        sys.exit(1)
 
+    except subprocess.CallProcessError, (p):
+        print 'subprocess.CalledProcessError: cmd:%s returncode:%s' % (p.cmd, p.returncode)
+        sys.exit(1)
+        
 if __name__ == '__main__':
     main()
 
