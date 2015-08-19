@@ -1,7 +1,6 @@
 #! /usr/bin/python3
 # encode:utf-8
 import subprocess
-import sys
 
 def main():
     lxcSocatList=["ubuntu-ap1", "ubuntu-ap2", "ubuntu-nginx"]
