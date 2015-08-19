@@ -14,17 +14,16 @@ def main():
         # failure ok
         subprocess.call(cmdStop)
     
-    try:
-        # Start lxc
-        for lxcName in lxcSocatList:
-            lxcNameSet = ["-n", lxcName]
-            cmdStart = ["/usr/bin/lxc-start"] + lxcNameSet + ["-d"]
-          
+    # Start lxc
+    for lxcName in lxcSocatList:
+        lxcNameSet = ["-n", lxcName]
+        cmdStart = ["/usr/bin/lxc-start"] + lxcNameSet + ["-d"]
+
+        try:
             subprocess.check_call(cmdStart)
             
-    except subprocess.CalledProcessError as e:
-        print('subprocess.CalledProcessError: cmd:%s returncode:%s' % (e.cmd, e.returncode))
-        sys.exit(1)
+        except subprocess.CalledProcessError as e:
+            print('subprocess.CalledProcessError: cmd:%s returncode:%s' % (e.cmd, e.returncode))
         
 if __name__ == '__main__':
     main()
