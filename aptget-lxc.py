@@ -22,6 +22,7 @@ def main():
             attachInstall = ["/usr/bin/apt-get", "install", "-y", insTool]
           
             subprocess.check_call(cmdAttach + attachInstall)
+            print "#"*10 + "end install on " + lxcName + "#"*10
 
     except subprocess.CallProcessError, (p):
         print 'subprocess.CalledProcessError: cmd:%s returncode:%s' % (p.cmd, p.returncode)
