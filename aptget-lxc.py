@@ -6,7 +6,7 @@ import sys
 
 def main():
 
-    lxcSocatList=["ubuntu-ap1", "ubuntu-ap2", "ubuntu-nginx"]
+    lxcList=["ubuntu-ap1", "ubuntu-ap2", "ubuntu-nginx"]
     
     parser = argparse.ArgumentParser()
     parser.add_argument('pp', metavar='PP', help='print lines containing this pattern.')
@@ -15,7 +15,7 @@ def main():
 
     try:
         # deploy Socat
-        for lxcName in lxcSocatList:
+        for lxcName in lxcList:
             lxcNameSet = ["-n", lxcName]
             cmdAttach = ["/usr/bin/lxc-attach"] + lxcNameSet + ["--"]
             
