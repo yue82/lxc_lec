@@ -5,7 +5,6 @@ import sys
 import json
 
 def main():
-    
     cmdHost = ["/bin/hostname"]
     cmdDate = ["/bin/date"]
     cmdSar = ["/usr/bin/sar", "1", "1"]
