@@ -28,7 +28,7 @@ def main():
         attachSocat = ["/usr/bin/socat TCP4-LISTEN:8000,fork,reuseaddr EXEC:\""+socatExecFile+"\" &"]
         
         # rm for test
-        shutil.rmtree(lxcHome + dirname)        
+        # shutil.rmtree(lxcHome + dirname)        
         
         # ready to file
         os.mkdir(lxcHome + dirname)
