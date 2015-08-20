@@ -1,9 +1,16 @@
 #! /usr/bin/python
 # encode:utf-8
+import argparse
 import subprocess
 import sys
 
 def main():
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument('pp', metavar='PP', help='print lines containing this pattern.')
+    args = parser.parse_args()
+    if args.pp == "go": goSocat = True
+    else: goSocat = False
 
     lxcList=["ubuntu-nginx"]
     lxcSocatList=["ubuntu-ap1", "ubuntu-ap2"]
@@ -39,9 +46,10 @@ def main():
             attachSocat = ["/usr/bin/socat TCP4-LISTEN:8000,fork,reuseaddr EXEC:\""+socatExec+"\" &"]
           
             subprocess.check_call(cmdAttach + attachInstallSocat)
-            subprocess.check_call(cmdAttach + onSh + attachSocat)
+            if goSocat:
+                subprocess.check_call(cmdAttach + onSh + attachSocat)
 
-    except subprocess.CallProcessError, (p):
+    except subprocess.CalledProcessError, (p):
         print 'subprocess.CalledProcessError: cmd:%s returncode:%s' % (p.cmd, p.returncode)
         sys.exit(1)
         
