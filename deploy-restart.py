@@ -3,7 +3,8 @@
 import subprocess
 
 def main():
-    lxcList=["ubuntu-ap1", "ubuntu-ap2", "ubuntu-nginx"]
+    # lxcList=["ubuntu-ap1", "ubuntu-ap2", "ubuntu-nginx"]
+    lxcList=["ubuntu-ap1", "ubuntu-ap2"]
 
     # stop same name LXC
     for lxcName in lxcList:
