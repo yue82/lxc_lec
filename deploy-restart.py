@@ -1,8 +1,7 @@
-#! /usr/bin/python
+#! /usr/bin/python3
 # encode:utf-8
 import argparse
 import subprocess
-import sys
 
 def main():
 
@@ -24,16 +23,22 @@ def main():
         print "set lxcname = " + listname
         lxcList = [listname]
 
-    # deploy Socat
+    # stop same name LXC
     for lxcName in lxcList:
         lxcNameSet = ["-n", lxcName]
-        cmdAttach = ["/usr/bin/lxc-attach"] + lxcNameSet + ["--"]
+        cmdStop = ["/usr/bin/lxc-stop"] + lxcNameSet
         
-        attachInstall = ["/usr/bin/apt-get", "install", "-y", insTool]
-        
-        subprocess.check_call(cmdAttach + attachInstall)
-        print "#"*10 + "end on " + lxcName + "#"*10
-            
+        # ignore failure
+        subprocess.call(cmdStop)
+    
+    # Start lxc
+    for lxcName in lxcList:
+        lxcNameSet = ["-n", lxcName]
+        cmdStart = ["/usr/bin/lxc-start"] + lxcNameSet + ["-d"]
+
+        subprocess.check_call(cmdStart)
+        print("start " + lxcName)
+
 if __name__ == '__main__':
     main()
 
