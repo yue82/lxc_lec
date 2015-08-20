@@ -22,6 +22,8 @@ def main():
         cmdChownDir = ["/bin/chown " +username + ":" + username+ " " + homeDir + dirname]
         cmdChownFile = ["/bin/chown " +username + ":" + username+ " " + homeDir + dirname + filename]
         
+        insSar = ["./aptget-lxc.py", "sysstat", lxcName]
+
         socatExecFile = homeDir+dirname+filename
         attachSocat = ["/usr/bin/socat TCP4-LISTEN:8000,fork,reuseaddr EXEC:\""+socatExecFile+"\" &"]
         
@@ -34,6 +36,8 @@ def main():
         subprocess.check_call(cmdAttach + onSh + cmdChownDir)
         subprocess.check_call(cmdAttach + onSh + cmdChownFile)
         os.chmod(lxcHome + dirname + filename, 755)
+        # sar command install
+        subprocess.check_call(insSar)
         # ready to TCP-LISTEN
         subprocess.check_call(cmdAttach + onSh + attachSocat)
         
