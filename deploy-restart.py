@@ -3,27 +3,24 @@
 import subprocess
 
 def main():
-    lxcSocatList=["ubuntu-ap1", "ubuntu-ap2", "ubuntu-nginx"]
+    lxcList=["ubuntu-ap1", "ubuntu-ap2", "ubuntu-nginx"]
 
     # stop same name LXC
-    for lxcName in lxcSocatList:
+    for lxcName in lxcList:
         lxcNameSet = ["-n", lxcName]
         cmdStop = ["/usr/bin/lxc-stop"] + lxcNameSet
         
-        # failure ok
+        # ignore failure
         subprocess.call(cmdStop)
     
     # Start lxc
-    for lxcName in lxcSocatList:
+    for lxcName in lxcList:
         lxcNameSet = ["-n", lxcName]
         cmdStart = ["/usr/bin/lxc-start"] + lxcNameSet + ["-d"]
 
-        try:
-            subprocess.check_call(cmdStart)
-            
-        except subprocess.CalledProcessError as e:
-            print('subprocess.CalledProcessError: cmd:%s returncode:%s' % (e.cmd, e.returncode))
-        
+        subprocess.check_call(cmdStart)
+        print("start " + lxcName)
+
 if __name__ == '__main__':
     main()
 
