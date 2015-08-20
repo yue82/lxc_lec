@@ -33,9 +33,9 @@ def main():
     }
     
     rsltMem = {
-        "Total":float(rsltFree1[1]),
-        "Used":float(rsltFree2[2]),
-        "Free":float(rsltFree2[3])
+        "Total":int(rsltFree1[1]),
+        "Used":int(rsltFree2[2]),
+        "Free":int(rsltFree2[3])
     }
     
     objAll = json.dumps({
