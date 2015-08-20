@@ -1,6 +1,8 @@
 #! /usr/bin/python3
 # encode:utf-8
 import subprocess
+import os
+import shutil
 
 def main():
     lxcList=["ubuntu-ap1", "ubuntu-ap2"]
@@ -13,34 +15,28 @@ def main():
     
     for lxcName in lxcList:
         lxcNameSet = ["-n", lxcName]
+        lxcHome = lxcPath + lxcName + lxcRoot + homeDir 
         cmdAttach = ["/usr/bin/lxc-attach"] + lxcNameSet + ["--"]
         onSh = ["/bin/sh", "-c"] 
-
-        lxcHome = lxcPath + lxcName + lxcRoot + homeDir 
-        
-        # cmd rm for test
-        cmdRm = ["/bin/rm"] + ["-rf"]+ [lxcHome+dirname] 
-        
-        cmdMkdir = ["/bin/mkdir"] + [lxcHome+dirname] 
-        
-        cmdCp = ["/bin/cp"] + [filename] + [lxcHome+dirname] 
-
-        cmdChown = ["/bin/chown " +username + ":" + username+ " " + homeDir+dirname+filename]
-
-        socatExec = homeDir+dirname+filename
-        attachSocat = ["/usr/bin/socat TCP4-LISTEN:8000,fork,reuseaddr EXEC:\""+socatExec+"\" &"]
-
-        try:
-            # subprocess.check_call(cmdRm)
-            subprocess.check_call(cmdMkdir)
-            subprocess.check_call(cmdCp)
-            subprocess.check_call(cmdAttach + onSh + cmdChown)
-            subprocess.check_call(cmdAttach + onSh + attachSocat)
                 
-        except subprocess.CalledProcessError as e:
-            print('subprocess.CalledProcessError: cmd:%s returncode:%s' % (e.cmd, e.returncode))
-            
-
+        cmdChownDir = ["/bin/chown " +username + ":" + username+ " " + homeDir + dirname]
+        cmdChownFile = ["/bin/chown " +username + ":" + username+ " " + homeDir + dirname + filename]
+        
+        socatExecFile = homeDir+dirname+filename
+        attachSocat = ["/usr/bin/socat TCP4-LISTEN:8000,fork,reuseaddr EXEC:\""+socatExecFile+"\" &"]
+        
+        # rm for test
+        shutil.rmtree(lxcHome + dirname)        
+        
+        # ready to file
+        os.mkdir(lxcHome + dirname)
+        shutil.copyfile(filename, lxcHome + dirname + filename)
+        subprocess.check_call(cmdAttach + onSh + cmdChownDir)
+        subprocess.check_call(cmdAttach + onSh + cmdChownFile)
+        os.chmod(lxcHome + dirname + filename, 755)
+        # ready to TCP-LISTEN
+        subprocess.check_call(cmdAttach + onSh + attachSocat)
+        
 if __name__ == '__main__':
     main()
 
