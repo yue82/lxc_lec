@@ -1,4 +1,4 @@
-#! /usr/bin/python3
+#! /usr/bin/python
 # encode:utf-8
 import argparse
 import subprocess
@@ -7,10 +7,8 @@ def main():
 
     parser = argparse.ArgumentParser()
     parser.add_argument('pp', metavar='PP', help='print lines containing this pattern.')
-    parser.add_argument('qq', metavar='QQ', help='print lines containing this pattern.')
     args = parser.parse_args()
-    insTool = args.pp
-    listname = args.qq
+    listname = args.pp
     
     if listname == "all":
         lxcList=["ubuntu-ap1", "ubuntu-ap2", "ubuntu-nginx"]
