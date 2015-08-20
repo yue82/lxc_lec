@@ -7,21 +7,13 @@ from socket import gethostname
 import datetime
 
 def main():
-    cmdHost = ["/bin/hostname"]
-    cmdDate = ["/bin/date"]
     cmdSar = ["/usr/bin/sar", "1", "1"]
     cmdLoadAvg = ["/usr/bin/sar", "-q", "1", "1"]
     cmdFree = ["/usr/bin/free"]
 
-    try:
-        copHost = subprocess.check_output(cmdHost, stderr=subprocess.STDOUT)
-        copDate = subprocess.check_output(cmdDate, stderr=subprocess.STDOUT)
-        copSar = subprocess.check_output(cmdSar, stderr=subprocess.STDOUT).decode("utf-8")
-        copLA = subprocess.check_output(cmdLoadAvg, stderr=subprocess.STDOUT).decode("utf-8")
-        copFree = subprocess.check_output(cmdFree, stderr=subprocess.STDOUT).decode("utf-8")
-    except(subprocess.CallProcessError, (p)):
-        print('subprocess.CalledProcessError: cmd:%s returncode:%s' % (p.cmd, p.returncode))
-        sys.exit(1)
+    copSar = subprocess.check_output(cmdSar, stderr=subprocess.STDOUT).decode("utf-8")
+    copLA = subprocess.check_output(cmdLoadAvg, stderr=subprocess.STDOUT).decode("utf-8")
+    copFree = subprocess.check_output(cmdFree, stderr=subprocess.STDOUT).decode("utf-8")
     
     rsltHost = gethostname()
     rsltDate = datetime.datetime.now().strftime("%Y/%m/%d %H:%M:%S")
@@ -29,7 +21,7 @@ def main():
     rsltLoadAvg = copLA.strip().split("\n")[3].strip().split()
     rsltFree1 = copFree.strip().split("\n")[1].strip().split()
     rsltFree2 = copFree.strip().split("\n")[2].strip().split()
-    
+        
     rsltCpu = {
         "LoadAvg1":float(rsltLoadAvg[3]),
         "LoadAvg5":float(rsltLoadAvg[4]),
